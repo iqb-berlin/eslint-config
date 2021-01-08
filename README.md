@@ -3,19 +3,27 @@
 ESLint rules for typescript and javascript development, with rules agreed by
 IQB developers.
 
-## Installation (Typescript)
+## Installation
 
-Put the following lines in your package.json.
+Run on command line:
+```
+npm install @iqb/eslint-config --save-dev
+```
 
+Put the following lines in your package.json, depending on whether you use Typescript or Javascript.
+#### Typescript
 ```
 "eslintConfig": {
   "extends": "@iqb/eslint-config"
 },
 ```
-Run on command line:
+#### Javascript
 ```
-npm install @iqb/eslint-config --save-dev
+"eslintConfig": {
+  "extends": "@iqb/eslint-config/javascript"
+},
 ```
+
 
 ## Troubleshooting
 
