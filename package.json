@@ -1,6 +1,6 @@
 {
   "name": "@iqb/eslint-config",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ESLint rules for javascript and typescript development",
   "main": "index.js",
   "repository": {
@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/iqb-berlin/eslint-config#readme",
   "dependencies": {
-    "eslint-config-airbnb-typescript": "^12.0.0"
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "@typescript-eslint/parser": "^4.9.0"
+  },
+  "peerDependencies" : {
+    "eslint": "^7.17.0",
+    "eslint-plugin-import": "^2.22.1",
+    "@typescript-eslint/eslint-plugin": "^4.9.0"
   }
 }
