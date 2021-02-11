@@ -44,6 +44,7 @@ module.exports = {
       "arrow-parens": ["error", "as-needed"],
       "max-len": ["warn", 120],
       "@typescript-eslint/no-inferrable-types": "off",
-      "no-underscore-dangle": ["error", {"allowAfterThis": true}]
+      "no-underscore-dangle": ["error", {"allowAfterThis": true}],
+      "prefer-destructuring": ["off"]
     }
 };
