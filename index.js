@@ -46,6 +46,6 @@ module.exports = {
       "@typescript-eslint/no-inferrable-types": "off",
       "no-underscore-dangle": ["error", {"allowAfterThis": true}],
       "prefer-destructuring": ["off"],
-      "@typescript-eslint/no-use-before-define": ["error", { "classes": false }]
+      "@typescript-eslint/no-unused-expressions": [2, {"allowTernary": true}]
     }
 };
