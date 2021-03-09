@@ -48,6 +48,7 @@ module.exports = {
       "prefer-destructuring": ["off"],
       "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
       "@typescript-eslint/no-unused-expressions": [2, {"allowTernary": true}],
-      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "@typescript-eslint/no-use-before-define": ["error", { "classes": false }]
     }
 };
