@@ -46,6 +46,7 @@ module.exports = {
       "@typescript-eslint/no-inferrable-types": "off",
       "no-underscore-dangle": ["error", {"allowAfterThis": true}],
       "prefer-destructuring": ["off"],
-      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "@typescript-eslint/no-unused-expressions": [2, {"allowTernary": true}]
     }
 };
