@@ -1,3 +1,6 @@
+[![npm](https://img.shields.io/npm/v/@iqb/eslint-config.svg?style=flat-square)](https://www.npmjs.com/package/@iqb/eslint-config)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
 # eslint-config
 
 ESLint rules for typescript and javascript development, with rules agreed by
