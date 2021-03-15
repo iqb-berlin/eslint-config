@@ -27,7 +27,9 @@ Put the following lines in your package.json, depending on whether you use Types
 
 ## Troubleshooting
 
-In case you are not using *Solution Style tsconfig.json* files (older Angular versions do this), add *parserOptions/project* to your package.json and make sure the path points to your main *tsconfig.json* file.
+In case you are not using *Solution Style tsconfig.json* files (older Angular versions do this; when you
+have a tsconfig.base.json in your project root, you are using solution style), add *parserOptions/project*
+to your package.json and make sure the path points to your main *tsconfig.json* file.
 
 ```
 "eslintConfig": {

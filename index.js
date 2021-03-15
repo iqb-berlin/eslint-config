@@ -36,16 +36,13 @@ module.exports = {
           }
         }
       ],
-      "no-plusplus": ["error",
-        {
-          "allowForLoopAfterthoughts": true
-        }
-      ],
       "arrow-parens": ["error", "as-needed"],
       "max-len": ["warn", 120],
       "@typescript-eslint/no-inferrable-types": "off",
       "no-underscore-dangle": ["error", {"allowAfterThis": true}],
       "prefer-destructuring": ["off"],
-      "@typescript-eslint/no-param-reassign": "off"
+      "@typescript-eslint/no-unused-expressions": [2, {"allowTernary": true}],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "no-param-reassign": ["error", { "props": false }]
     }
 };
