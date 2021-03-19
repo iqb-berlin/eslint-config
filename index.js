@@ -43,6 +43,15 @@ module.exports = {
     "prefer-destructuring": ["off"],
     "@typescript-eslint/no-unused-expressions": [2, {"allowTernary": true}],
     "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
-    "no-param-reassign": ["error", {"props": false}]
+    "no-param-reassign": ["error", {"props": false}],
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        accessibility: 'no-public',
+        overrides: {
+          properties: 'explicit'
+        }
+      }
+    ]
   }
 };
