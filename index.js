@@ -49,7 +49,11 @@ module.exports = {
       {
         accessibility: 'no-public',
         overrides: {
-          properties: 'explicit'
+          accessors: 'no-public',
+          constructors: 'no-public',
+          methods: 'no-public',
+          properties: 'no-public',
+          parameterProperties: 'no-public'
         }
       }
     ]
