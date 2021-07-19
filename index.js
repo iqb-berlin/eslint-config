@@ -56,6 +56,7 @@ module.exports = {
           parameterProperties: 'no-public'
         }
       }
-    ]
+    ],
+    "no-use-before-define": ["error", { "classes": true }]
   }
 };
