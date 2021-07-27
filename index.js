@@ -57,7 +57,7 @@ module.exports = {
         }
       }
     ],
-    "no-use-before-define": ["error", { "classes": true }],
+    "no-use-before-define": ["off"],
     "object-shorthand": ["off"]
   }
 };
