@@ -14,7 +14,8 @@ module.exports = {
     "project": "./tsconfig.base.json"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import"
   ],
   "rules": {
     "@typescript-eslint/comma-dangle": ["error", "never"],
