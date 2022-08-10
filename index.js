@@ -61,6 +61,7 @@ module.exports = {
     ],
     "no-use-before-define": ["off"],
     "@typescript-eslint/no-use-before-define": ["off"],
-    "object-shorthand": ["off"]
+    "object-shorthand": ["off"],
+    "function-paren-newline": ["off"]
   }
 };
