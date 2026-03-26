@@ -1,37 +1,40 @@
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true
-  },
-  extends: [
-    'airbnb-base'
-  ],
-  parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module'
-  },
-  rules: {
-    'comma-dangle': ['error', 'never'],
-    'arrow-parens': ['error', 'as-needed'],
-    'max-len': ['warn', 120],
-    indent: [
-      'error', 2,
-      {
-        SwitchCase: 1,
-        FunctionExpression: {
-          parameters: 'first'
-        }
-      }
-    ],
-    'prefer-destructuring': ['error', {
-      VariableDeclarator: {
-        array: false,
-        object: false
+import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  js.configs.recommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.es2021
       },
-      AssignmentExpression: {
-        array: false,
-        object: false
-      }
-    }]
+      ecmaVersion: 'latest',
+      sourceType: 'module'
+    },
+    rules: {
+      'comma-dangle': ['error', 'never'],
+      'arrow-parens': ['error', 'as-needed'],
+      'max-len': ['warn', 120],
+      indent: [
+        'error', 2,
+        {
+          SwitchCase: 1,
+          FunctionExpression: {
+            parameters: 'first'
+          }
+        }
+      ],
+      'prefer-destructuring': ['error', {
+        VariableDeclarator: {
+          array: false,
+          object: false
+        },
+        AssignmentExpression: {
+          array: false,
+          object: false
+        }
+      }]
+    }
   }
-};
+];
