@@ -42,3 +42,11 @@ to your package.json and make sure the path points to your main *tsconfig.json* 
   }
 },
 ```
+
+## Internal Development
+
+Run smoke tests for both TypeScript and JavaScript fixtures:
+
+```bash
+npm test
+```
