@@ -82,3 +82,11 @@ path points to your main *tsconfig.json* file.
   }
 }
 ```
+
+## Internal Development
+
+Run smoke tests for both TypeScript and JavaScript fixtures:
+
+```bash
+npm test
+```

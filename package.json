@@ -1,6 +1,6 @@
 {
   "name": "@iqb/eslint-config",
-  "version": "2.3.0",
+  "version": "2.2.1",
   "description": "ESLint rules for javascript and typescript development",
   "main": "index.js",
   "exports": {
@@ -8,6 +8,8 @@
     "./base": "./base.js",
     "./typescript": "./typescript.js",
     "./javascript": "./javascript.js"
+  "scripts": {
+    "test": "mocha tests/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,14 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "eslint-config-airbnb-typescript": "^18.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.4",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0"
   }
 }
