@@ -1,8 +1,14 @@
 {
   "name": "@iqb/eslint-config",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "ESLint rules for javascript and typescript development",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./base": "./base.js",
+    "./typescript": "./typescript.js",
+    "./javascript": "./javascript.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iqb-berlin/eslint-config.git"
