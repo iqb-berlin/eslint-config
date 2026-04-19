@@ -1,0 +1,105 @@
+name: Rule Change
+description: Vorschlag fuer neue, geaenderte oder deaktivierte ESLint-Regeln
+title: "rule-change: <kurzer titel>"
+labels:
+  - rule-change
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fuer deinen Vorschlag.
+        Bitte so konkret wie moeglich ausfuellen, damit wir schnell entscheiden koennen.
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Typ der Aenderung
+      options:
+        - Regel aktivieren
+        - Regel deaktivieren
+        - Regellevel aendern (error/warn/off)
+        - Regeloptionen aendern
+        - Neue Plugin-Regel einfuehren
+    validations:
+      required: true
+
+  - type: input
+    id: rule_name
+    attributes:
+      label: Betroffene Regel
+      description: z. B. @typescript-eslint/no-floating-promises
+      placeholder: plugin/rule-name
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problemstellung
+      description: Welches konkrete Problem loesen wir?
+      placeholder: Kurze Beschreibung mit Kontext
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Konkreter Vorschlag
+      description: Welche Regelkonfiguration schlaegst du vor?
+      placeholder: |
+        Beispiel:
+        "rules": {
+          "@typescript-eslint/no-floating-promises": "error"
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Codebeispiele (vorher/nachher)
+      description: Kleine Snippets oder Links auf Stellen im Code
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Empfohlenes Level
+      options:
+        - error
+        - warn
+        - off
+    validations:
+      required: true
+
+  - type: dropdown
+    id: semver_impact
+    attributes:
+      label: Vermuteter SemVer-Impact
+      options:
+        - patch
+        - minor
+        - major
+    validations:
+      required: true
+
+  - type: textarea
+    id: rollout_risk
+    attributes:
+      label: Rollout-Risiko und Migrationsaufwand
+      description: Welche Repos sind wahrscheinlich betroffen und wie aufwaendig ist die Umstellung?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checkliste
+      options:
+        - label: Ich habe geprueft, ob es bereits ein aehnliches Rule-Change-Issue gibt
+          required: true
+        - label: Ich habe mindestens ein reales Beispiel aus einem IQB-Repository angegeben
+          required: true
+        - label: Ich kann bei Bedarf einen PR oder Testfall beisteuern
+          required: false

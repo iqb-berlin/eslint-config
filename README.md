@@ -72,6 +72,15 @@ npm run lint
 npm run test
 ```
 
+## Governance und Teamarbeit
+
+- Lint-Governance und Entscheidungsregeln:
+  - [`docs/lint-policy.md`](docs/lint-policy.md)
+- CI-Checkliste fuer Consumer-Repositories:
+  - [`docs/consumer-ci-checklist.md`](docs/consumer-ci-checklist.md)
+- Vorlage fuer Regel-Aenderungsantraege:
+  - [`.github/ISSUE_TEMPLATE/rule-change.yml`](.github/ISSUE_TEMPLATE/rule-change.yml)
+
 ## Troubleshooting
 
 In case you are not using *Solution Style tsconfig.json* files, make sure the `project` path in `parserOptions` points to your main `tsconfig.json` file.
