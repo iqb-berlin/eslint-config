@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Lint Policy
+    url: https://github.com/iqb-berlin/eslint-config/blob/master/docs/lint-policy.md
+    about: Lese zuerst die Governance und Entscheidungsregeln fuer Regel-Aenderungen.
+  - name: Consumer CI Checklist
+    url: https://github.com/iqb-berlin/eslint-config/blob/master/docs/consumer-ci-checklist.md
+    about: Nutze die Checkliste fuer Einfuehrung und CI-Rollout in Consumer-Repositories.
