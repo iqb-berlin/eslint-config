@@ -1,6 +1,6 @@
 # Migration from 2.2.0 to 3.0.0
 
-Version 3.0.0 is prepared for release. Publishing remains a separate maintainer step.
+Version 3.0.0 uses ESM, ESLint Flat Config and current TypeScript tooling.
 
 ## Choose the TypeScript profile
 
@@ -18,7 +18,7 @@ There is no compatibility export for the old Airbnb JavaScript profile.
 ## Upgrade the tools
 
 Use Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`. Install matching ESLint and
-`@eslint/js` majors, for example after 3.0.0 is published:
+`@eslint/js` majors, for example:
 
 ```sh
 npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescript@~5.9.3

@@ -2,7 +2,7 @@
 
 ESLint rules for TypeScript and JavaScript development, with rules agreed by IQB developers. Uses ESLint 9/10 Flat Config and ESM.
 
-This branch prepares the unreleased 3.0.0 major version. See the
+Version 3.0.0 is a major upgrade from the legacy configuration. See the
 [migration guide](docs/migration.md) and [changelog](CHANGELOG.md) before upgrading.
 
 ## Features
@@ -17,7 +17,7 @@ This branch prepares the unreleased 3.0.0 major version. See the
 
 ## Installation
 
-Requires Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`. After 3.0.0 is published:
+Requires Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`.
 ```bash
 npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescript@~5.9.3
 ```
