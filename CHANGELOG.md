@@ -23,6 +23,8 @@
 - Preserve semicolons in the default TypeScript profile and migrate the arrow-parenthesis override to Stylistic, avoiding conflicting rules.
 - Disable `import-x/no-unresolved` and `import-x/named` for TypeScript, which already checks module paths.
 - Use the TypeScript JSDoc preset, without requiring redundant JSDoc parameter types.
+- Register the installed TypeScript parser by absolute path so import analysis also works without dependency hoisting.
+- Select the richer profile's import-analysis TSConfig from each source file, preserving aliases when ESLint and the calling process have different working directories.
 - Scope the JavaScript presets to JavaScript files and support `.cjs` configuration files.
 
 See [the migration guide](docs/migration.md) before upgrading a consumer project.

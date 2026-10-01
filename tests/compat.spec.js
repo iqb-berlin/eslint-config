@@ -7,6 +7,7 @@ import modern from '../index.js';
 import javascript from '../javascript.js';
 import rules from '../compat-rules.js';
 import { migrateLegacyRules, removedRules } from '../scripts/generate-compat-rules.js';
+import { typescriptParserPath } from '../import-support.js';
 
 const workspace = fileURLToPath(new URL('./fixtures/nx/', import.meta.url));
 const sample = 'apps/frontend/src/sample.ts';
@@ -27,9 +28,12 @@ describe('Compatibility migration', () => {
 
   it('preserves the legacy import settings and Node resolution policy', () => {
     for (const [name, value] of Object.entries(snapshot.settings)) {
-      if (name === 'import/resolver') continue;
+      if (['import/resolver', 'import/parsers'].includes(name)) continue;
       assert.deepEqual(compat[0].settings[name.replace('import/', 'import-x/')], value);
     }
+    assert.deepEqual(compat[0].settings['import-x/parsers'], {
+      [typescriptParserPath]: snapshot.settings['import/parsers']['@typescript-eslint/parser']
+    });
     const [resolver] = compat[0].settings['import-x/resolver-next'];
     assert.equal(resolver.name, 'iqb/legacy-node');
     assert.equal(resolver.resolve('@shared/value', fileURLToPath(new URL(`./fixtures/nx/${sample}`, import.meta.url))).found, false);
@@ -62,6 +66,22 @@ describe('Compatibility migration', () => {
 });
 
 describe('Project references and mixed workspaces', () => {
+  it('resolves aliases when ESLint cwd differs from the calling process', async () => {
+    const [result] = await createESLint(modern).lintFiles(['apps/frontend/src/alias-imports.ts']);
+    assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
+    const duplicates = result.messages.filter(message => message.ruleId === 'import-x/no-duplicates');
+    assert.equal(duplicates.length, 2, JSON.stringify(result.messages));
+  });
+
+  it('detects actual TypeScript import cycles in the compatibility profile', async () => {
+    const results = await createESLint(compat).lintFiles(['libs/shared/src/cycle-*.ts']);
+    assert.equal(results.length, 2);
+    for (const result of results) {
+      assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
+      assert.ok(result.messages.some(message => message.ruleId === 'import-x/no-cycle'), JSON.stringify(result.messages));
+    }
+  });
+
   for (const [name, config] of [['compat', compat], ['modern', modern]]) {
     it(`${name} lints project references and TypeScript aliases`, async () => {
       const results = await createESLint(config).lintFiles([sample, 'libs/shared/src/value.ts']);

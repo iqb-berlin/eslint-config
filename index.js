@@ -6,7 +6,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
 import stylistic from '@stylistic/eslint-plugin';
 import importX from 'eslint-plugin-import-x';
-import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import { createProjectImportResolver, typescriptParserPath } from './import-support.js';
 
 export default tseslint.config(
   {
@@ -20,13 +20,19 @@ export default tseslint.config(
       perfectionist.configs['recommended-natural'],
       stylistic.configs.recommended,
       importX.flatConfigs.recommended,
-      importX.flatConfigs.typescript,
+      {
+        ...importX.flatConfigs.typescript,
+        settings: {
+          ...importX.flatConfigs.typescript.settings,
+          'import-x/parsers': { [typescriptParserPath]: ['.ts', '.tsx', '.cts', '.mts'] }
+        }
+      },
       {
         plugins: {
           'import-x': importX
         },
         settings: {
-          'import-x/resolver-next': [createTypeScriptImportResolver()]
+          'import-x/resolver-next': [createProjectImportResolver()]
         },
         languageOptions: {
           ecmaVersion: 'latest',

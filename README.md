@@ -104,11 +104,15 @@ npm run test
 ```bash
 ESLINT_VERSION=9 npm run test:package
 ESLINT_VERSION=10 npm run test:package
+PACKAGE_MANAGER=pnpm ESLINT_VERSION=10 npm run test:package
 ```
 
 These checks pack the package, install it in a clean temporary consumer and
-lint TypeScript project references, path aliases, ESM and CommonJS. CI runs the
-unit tests and these consumer checks with both ESLint majors on Node.js 20/22.
+lint TypeScript project references, path aliases, ESM and CommonJS. They check
+actual duplicate imports and cycles, including calls from outside the consumer
+directory. The pnpm check needs pnpm installed and disables dependency hoisting.
+CI runs the unit tests and npm/pnpm consumer checks with both ESLint majors on
+Node.js 20/22.
 
 The legacy snapshot and rule mappings can be regenerated with
 `npm run capture:legacy` and `npm run generate:compat`; see the migration guide

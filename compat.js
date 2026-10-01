@@ -4,6 +4,7 @@ import importX from 'eslint-plugin-import-x';
 import globals from 'globals';
 import nodeResolver from 'eslint-import-resolver-node';
 import rules from './compat-rules.js';
+import { typescriptParserPath } from './import-support.js';
 
 // Flat Config with the effective TypeScript rules from @iqb/eslint-config 2.2.0.
 // No recommended presets: upgrading tools must not add new style rules here.
@@ -24,7 +25,7 @@ export default [
       'import-x': importX
     },
     settings: {
-      'import-x/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx', '.d.ts'] },
+      'import-x/parsers': { [typescriptParserPath]: ['.ts', '.tsx', '.d.ts'] },
       'import-x/extensions': ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.d.ts'],
       'import-x/external-module-folders': ['node_modules', 'node_modules/@types'],
       'import-x/core-modules': [],

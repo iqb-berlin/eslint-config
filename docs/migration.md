@@ -82,8 +82,12 @@ TypeScript checks module names and aliases, so `import-x/no-unresolved` and
 `import-x/named` are off in both TypeScript profiles. Keep a separate TypeScript
 typecheck/build in CI. `/compat` retains the old Node-style import resolution;
 the richer profile uses the installed TypeScript resolver for additional
-alias-aware import analysis. That analysis can reveal cycles the older resolver
-did not see and should be reviewed as part of the richer-profile rollout.
+alias-aware import analysis, following the source file's nearest `tsconfig.json`
+and its references even when ESLint's working directory differs from the
+calling process. To select a custom import-analysis TSConfig, override
+`import-x/resolver-next` with your own TypeScript resolver. That analysis can
+reveal duplicate imports the older resolver did not see and should be reviewed
+as part of the richer-profile rollout.
 
 ## Compatibility provenance and adaptations
 
@@ -126,6 +130,11 @@ Two obsolete options are omitted because the successor schemas reject them:
 options retain their captured values. Future changes to `/compat` should be
 reviewed against this baseline, rather than importing new recommended presets.
 
+Both TypeScript profiles register the parser by its absolute installed path,
+resolved through the `typescript-eslint` dependency. This preserves the parser
+selection without requiring transitive dependencies to be hoisted or installed
+again in the consumer.
+
 Upstream rule implementations and their implicit defaults can still change
 between tool versions; the compatibility profile is not a promise of identical
 findings on every input. For example, Stylistic fixes some indentation cases
@@ -144,6 +153,10 @@ semicolons, arrow parentheses, object order and actual type-aware violations.
 `npm run test:package` packs and installs the package into a clean temporary
 consumer and lints TypeScript, ESM JavaScript and CommonJS there. Set
 `ESLINT_VERSION=9` or `ESLINT_VERSION=10` to choose the consumer tool version.
+With pnpm installed, set `PACKAGE_MANAGER=pnpm` to test without dependency
+hoisting. These checks assert real cycle/duplicate-import findings and run
+ESLint from outside the consumer directory; absence of unresolved-import
+warnings alone is not evidence that alias resolution works.
 
 ### studio-lite canary
 
