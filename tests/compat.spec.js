@@ -74,10 +74,20 @@ describe('Project references and mixed workspaces', () => {
     });
   }
 
-  it('reproduces the reported parsing failure with project: true', async () => {
+  it('reproduces the project: true parsing failure in editor/watch mode', async () => {
     const config = [
       ...compat,
-      { languageOptions: { parserOptions: { projectService: false, project: true } } }
+      {
+        languageOptions: {
+          parserOptions: {
+            projectService: false,
+            project: true,
+            // CI infers single-run mode, which can behave differently for
+            // project references. Reproduce the editor/watch failure explicitly.
+            disallowAutomaticSingleRunInference: true
+          }
+        }
+      }
     ];
     const [result] = await createESLint(config).lintFiles([sample]);
     assert.ok(result.messages.some(message => message.fatal && /not found|does(?: not|n't) include/iu.test(message.message)),
