@@ -10,17 +10,17 @@ npm install --save-dev @iqb/eslint-config
 
 ## 2. ESLint Flat Config anlegen
 
-TypeScript (`eslint.config.js`):
+TypeScript (`eslint.config.mjs`; use `/compat` first in existing projects):
 
 ```js
-import iqbConfig from '@iqb/eslint-config';
+import iqbConfig from '@iqb/eslint-config/compat';
 
 export default [
   ...iqbConfig,
   {
+    files: ['**/*.{ts,tsx,mts,cts}'],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname
       }
     }
@@ -28,7 +28,7 @@ export default [
 ];
 ```
 
-JavaScript (`eslint.config.js`):
+JavaScript (`eslint.config.mjs`):
 
 ```js
 import iqbJavaScriptConfig from '@iqb/eslint-config/javascript';
@@ -96,6 +96,8 @@ jobs:
 ## 7. Upgrade-Prozess
 
 - Neue `@iqb/eslint-config` Version in einer technischen PR anheben
+- Werkzeug-Upgrade mit `/compat` und Wechsel zum umfangreicheren Regelsatz getrennt pruefen
+- [Migrationsanleitung](migration.md) und Node-/ESLint-Voraussetzungen beachten
 - Changelog/Migrationshinweise pruefen
 - CI + lokale Lint-Checks pruefen
 - Bei Abweichungen Rule-Change-Issue im Config-Repo anlegen
