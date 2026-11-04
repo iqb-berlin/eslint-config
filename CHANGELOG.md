@@ -10,7 +10,8 @@
   globstar, extglobs, braces, hidden files and restricted-path exceptions.
 - Test the patched rule through both profiles in clean installed npm/pnpm
   consumers. Require zero findings at every severity in dependency audits.
-- Retain the documented root overrides for the other lint dependencies.
+- Document five scoped root overrides for other lint dependencies, including
+  ESLint 9's legacy eslintrc dependency, and test its CommonJS FlatCompat bridge.
 
 ## 3.0.0
 

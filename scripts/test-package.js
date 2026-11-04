@@ -61,6 +61,7 @@ try {
   writeFileSync(join(consumer, 'sample.cjs'), 'module.exports = value => value;\n');
   writeFileSync(join(consumer, 'check.mjs'), `
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { ESLint } from 'eslint';
 import modern from '@iqb/eslint-config';
 import compat from '@iqb/eslint-config/compat';
@@ -107,6 +108,19 @@ for (const [name, config] of [['modern', modern], ['compat', compat]]) {
     assert.equal(duplicates.length, 2, JSON.stringify(results[4].messages));
   }
   console.log(name + ': installed package checks project references, import analysis, ESM and CommonJS');
+}
+if (ESLint.version.startsWith('9.')) {
+  const requireESLint = createRequire(import.meta.resolve('eslint'));
+  const { FlatCompat } = requireESLint('@eslint/eslintrc');
+  const legacy = new FlatCompat({ baseDirectory: import.meta.dirname });
+  const legacyCheck = new ESLint({
+    cwd: import.meta.dirname, overrideConfigFile: true,
+    overrideConfig: legacy.config({ overrides: [{ files: ['**/*.mjs'], rules: { 'no-alert': 'error' } }] })
+  });
+  const [result] = await legacyCheck.lintText('alert("legacy");', { filePath: 'legacy-check.mjs' });
+  assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
+  assert.equal(result.messages.filter(message => message.ruleId === 'no-alert').length, 1);
+  console.log('ESLint 9: the CommonJS FlatCompat bridge preserves legacy override matching.');
 }
 `);
   // Load the installed config from outside the consumer project as editors do.

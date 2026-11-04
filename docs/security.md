@@ -31,7 +31,8 @@ as well as alias resolution, cycles and duplicate imports.
 The development test runner is Mocha 12. Scoped root overrides select
 `glob` 14.0.3+, `serialize-javascript` 7.1.4+ and minimatch 11.0.4+ in the
 affected test-tool paths. ESLint, `@eslint/config-array`,
-`@typescript-eslint/typescript-estree` and SonarJS also use scoped minimatch
+`@eslint/eslintrc` (for ESLint 9), `@typescript-eslint/typescript-estree` and
+SonarJS use scoped minimatch
 overrides until their declared dependency ranges include the fixed major.
 
 These overrides cross dependency major versions. They are intentionally scoped
@@ -56,6 +57,7 @@ For pnpm 10/11, merge these selectors into `pnpm-workspace.yaml`:
 overrides:
   'eslint>minimatch': '^11.0.4'
   '@eslint/config-array>minimatch': '^11.0.4'
+  '@eslint/eslintrc>minimatch': '^11.0.4'
   '@typescript-eslint/typescript-estree>minimatch': '^11.0.4'
   'eslint-plugin-sonarjs>minimatch': '^11.0.4'
 ```
@@ -69,3 +71,19 @@ pnpm check. The expected audit result is zero findings for these clean consumer
 trees. Existing applications may contain additional unrelated dependencies
 that require separate remediation. Without `APPLY_SECURITY_OVERRIDES`, the
 script tests an ordinary install without changing its dependency policy.
+
+### ESLint 9 consumers using FlatCompat
+
+The supported profiles use native Flat Config. If a consumer additionally uses
+ESLint 9's legacy `FlatCompat` bridge, load its CommonJS export after applying
+the overrides. The upstream ESM entry still imports minimatch's removed default
+export, whereas the CommonJS entry uses the supported `Minimatch` class:
+
+```js
+import { createRequire } from 'node:module';
+const requireESLint = createRequire(import.meta.resolve('eslint'));
+const { FlatCompat } = requireESLint('@eslint/eslintrc');
+```
+
+The owner-relative require also works without dependency hoisting. Installed
+ESLint 9 consumer tests verify this bridge and its legacy override matching.
