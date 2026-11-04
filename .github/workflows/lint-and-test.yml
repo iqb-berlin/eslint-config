@@ -1,10 +1,14 @@
 name: Lint and Test
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+permissions:
+  contents: read
 
 jobs:
   lint-and-test:
@@ -12,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20.x', '22.x']
+        node-version: ['20.x', '22.x', '24.x']
         eslint-version: ['9', '10']
 
     steps:
@@ -29,6 +33,9 @@ jobs:
       - name: Select ESLint version
         run: npm install --no-save --package-lock=false eslint@${{ matrix.eslint-version }} @eslint/js@${{ matrix.eslint-version }}
 
+      - name: Audit dependencies
+        run: npm run audit
+
       - name: Run linting
         run: npm run lint
 
@@ -39,6 +46,7 @@ jobs:
         run: npm run test:package
         env:
           ESLINT_VERSION: ${{ matrix.eslint-version }}
+          APPLY_SECURITY_OVERRIDES: '1'
 
       - name: Install pnpm
         run: npm install --global pnpm@10.32.1
@@ -48,3 +56,15 @@ jobs:
         env:
           ESLINT_VERSION: ${{ matrix.eslint-version }}
           PACKAGE_MANAGER: pnpm
+          APPLY_SECURITY_OVERRIDES: '1'
+
+  validation:
+    name: Validation
+    if: always()
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require all supported combinations to pass
+        env:
+          MATRIX_RESULT: ${{ needs.lint-and-test.result }}
+        run: test "$MATRIX_RESULT" = success

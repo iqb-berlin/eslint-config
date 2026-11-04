@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import { cpSync, existsSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +13,8 @@ const consumer = join(temporary, 'consumer');
 const version = process.env.ESLINT_VERSION || '10';
 const jsVersion = version.split('.')[0];
 const packageManager = process.env.PACKAGE_MANAGER || 'npm';
+const applySecurityOverrides = process.env.APPLY_SECURITY_OVERRIDES === '1';
+const securityOverrides = JSON.parse(readFileSync(new URL('../docs/consumer-overrides.json', import.meta.url)));
 assert.ok(['npm', 'pnpm'].includes(packageManager), 'Use npm or pnpm for PACKAGE_MANAGER');
 
 try {
@@ -23,10 +25,18 @@ try {
   assert.ok(tarball.files.some(file => file.path === 'THIRD_PARTY_NOTICES.md'));
   assert.ok(!tarball.files.some(file => /^(tests|scripts|node_modules)\//u.test(file.path)));
   mkdirSync(consumer);
-  writeFileSync(join(consumer, 'package.json'), JSON.stringify({ name: 'iqb-package-consumer', private: true, type: 'module' }));
+  writeFileSync(join(consumer, 'package.json'), JSON.stringify({
+    name: 'iqb-package-consumer', private: true, type: 'module',
+    ...(applySecurityOverrides && packageManager === 'npm' ? { overrides: securityOverrides } : {})
+  }));
   if (packageManager === 'pnpm') {
     // Configure pnpm 11 in its workspace file; .npmrc no longer owns hoisting.
-    writeFileSync(join(consumer, 'pnpm-workspace.yaml'), 'packages:\n  - .\nhoist: false\nminimumReleaseAge: 0\n');
+    const overrides = Object.entries(securityOverrides).flatMap(([parent, dependencies]) =>
+      Object.entries(dependencies).map(([dependency, range]) => `  '${parent}>${dependency}': '${range}'`));
+    writeFileSync(join(consumer, 'pnpm-workspace.yaml'), [
+      'packages:', '  - .', 'hoist: false', 'minimumReleaseAge: 0',
+      ...(applySecurityOverrides ? ['overrides:', ...overrides] : []), ''
+    ].join('\n'));
   }
   const installOptions = packageManager === 'npm'
     ? ['install', '--ignore-scripts', '--no-audit', '--no-fund']
@@ -38,6 +48,11 @@ try {
   if (packageManager === 'pnpm') {
     assert.ok(!existsSync(join(consumer, 'node_modules/.pnpm/node_modules/@typescript-eslint/parser')),
       'The pnpm consumer must not hoist the parser into its shared dependency directory');
+  }
+  if (applySecurityOverrides) {
+    const audited = await exec(packageManager, ['audit', '--audit-level=high'], { cwd: consumer, maxBuffer: 4 * 1024 * 1024 });
+    process.stdout.write(audited.stdout);
+    console.log('Consumer audit found no high or critical vulnerabilities with the documented root overrides.');
   }
   cpSync(join(root, 'tests/fixtures/nx'), consumer, { recursive: true });
   writeFileSync(join(consumer, 'sample.mjs'), 'export const sum = (a, b) => a + b;\n');
