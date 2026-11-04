@@ -17,6 +17,14 @@ Version 3.0.0 is a major upgrade from the legacy configuration. See the
 
 ## Installation
 
+Check availability with `npm view @iqb/eslint-config@3.0.0 version` before
+following the version 3 instructions below. A 404 means that the source changes
+have not yet been published to npm; the legacy 2.x package cannot use these
+Flat Config examples. See [the release procedure](docs/releasing.md).
+
+Apply the root dependency overrides described in [dependency security](docs/security.md)
+and review the remaining moderate upstream import-x finding before upgrading.
+
 Requires Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`.
 ```bash
 npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescript@~5.9.3
@@ -105,14 +113,16 @@ npm run test
 ESLINT_VERSION=9 npm run test:package
 ESLINT_VERSION=10 npm run test:package
 PACKAGE_MANAGER=pnpm ESLINT_VERSION=10 npm run test:package
+APPLY_SECURITY_OVERRIDES=1 ESLINT_VERSION=10 npm run test:package
 ```
 
 These checks pack the package, install it in a clean temporary consumer and
 lint TypeScript project references, path aliases, ESM and CommonJS. They check
 actual duplicate imports and cycles, including calls from outside the consumer
 directory. The pnpm check needs pnpm installed and disables dependency hoisting.
-CI runs the unit tests and npm/pnpm consumer checks with both ESLint majors on
-Node.js 20/22.
+CI runs the unit tests and npm/pnpm consumer checks with the documented security
+overrides and both ESLint majors on Node.js 20/22/24. Its dependency audits fail
+on high or critical findings and print the remaining moderate findings.
 
 The legacy snapshot and rule mappings can be regenerated with
 `npm run capture:legacy` and `npm run generate:compat`; see the migration guide

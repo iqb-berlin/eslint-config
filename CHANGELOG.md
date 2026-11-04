@@ -1,6 +1,9 @@
 # Changelog
 
-## 3.0.0 (2026-10-01)
+## 3.0.0
+
+Source preparation began on 2026-10-01. Confirm npm availability using the
+[release procedure](docs/releasing.md); the source version is not publication evidence.
 
 ### Breaking changes
 
@@ -14,7 +17,9 @@
 
 - `@iqb/eslint-config/compat`, generated from a versioned snapshot of the legacy TypeScript configuration, with documented successor rules and removed rules.
 - Project-reference, alias, compatibility and clean installed-package regression tests.
-- CI coverage for ESLint 9/10 on Node.js 20/22.
+- CI coverage for ESLint 9/10 on Node.js 20/22/24, dependency audits and an
+  aggregate `Validation` check for branch protection.
+- A reproducible release procedure and initial master-protection settings.
 
 ### Fixed
 
@@ -26,5 +31,9 @@
 - Register the installed TypeScript parser by absolute path so import analysis also works without dependency hoisting.
 - Select the richer profile's import-analysis TSConfig from each source file, preserving aliases when ESLint and the calling process have different working directories.
 - Scope the JavaScript presets to JavaScript files and support `.cjs` configuration files.
+- Upgrade the test runner to Mocha 12 and apply scoped security overrides for
+  affected dependencies. Consumers must apply their own root overrides;
+  import-x still has a moderate upstream minimatch finding. See
+  [dependency security](docs/security.md) for the limitation and tested setup.
 
 See [the migration guide](docs/migration.md) before upgrading a consumer project.
