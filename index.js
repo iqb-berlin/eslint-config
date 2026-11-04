@@ -5,7 +5,7 @@ import sonarjs from 'eslint-plugin-sonarjs';
 import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
 import stylistic from '@stylistic/eslint-plugin';
-import importX from 'eslint-plugin-import-x';
+import importX from './import-plugin.js';
 import { createProjectImportResolver, typescriptParserPath } from './import-support.js';
 
 export default tseslint.config(

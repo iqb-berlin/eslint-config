@@ -4,7 +4,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['node_modules/**', 'tests/fixtures/**']
+    ignores: ['node_modules/**', 'tests/fixtures/**', 'vendor/**']
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

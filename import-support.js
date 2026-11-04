@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
 import ts from 'typescript';
-import { createNodeResolver } from 'eslint-plugin-import-x';
+import { createNodeResolver } from './import-plugin.js';
 import {
   createTypeScriptImportResolver,
   defaultExtensions,

@@ -1,7 +1,8 @@
 {
   "required_status_checks": {
     "strict": true,
-    "contexts": ["Validation"]
+    "contexts": [],
+    "checks": [{ "context": "Validation", "app_id": 15368 }]
   },
   "enforce_admins": true,
   "required_pull_request_reviews": {

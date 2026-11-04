@@ -22,6 +22,8 @@ try {
   const [tarball] = JSON.parse(packed.stdout);
   assert.ok(tarball.files.some(file => file.path === 'compat-rules.js'));
   assert.ok(tarball.files.some(file => file.path === 'import-support.js'));
+  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/lib/index.cjs'));
+  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/LICENSE'));
   assert.ok(tarball.files.some(file => file.path === 'THIRD_PARTY_NOTICES.md'));
   assert.ok(!tarball.files.some(file => /^(tests|scripts|node_modules)\//u.test(file.path)));
   mkdirSync(consumer);
@@ -50,15 +52,16 @@ try {
       'The pnpm consumer must not hoist the parser into its shared dependency directory');
   }
   if (applySecurityOverrides) {
-    const audited = await exec(packageManager, ['audit', '--audit-level=high'], { cwd: consumer, maxBuffer: 4 * 1024 * 1024 });
+    const audited = await exec(packageManager, ['audit', '--audit-level=low'], { cwd: consumer, maxBuffer: 4 * 1024 * 1024 });
     process.stdout.write(audited.stdout);
-    console.log('Consumer audit found no high or critical vulnerabilities with the documented root overrides.');
+    console.log('Consumer audit found no vulnerabilities with the documented root overrides.');
   }
   cpSync(join(root, 'tests/fixtures/nx'), consumer, { recursive: true });
   writeFileSync(join(consumer, 'sample.mjs'), 'export const sum = (a, b) => a + b;\n');
   writeFileSync(join(consumer, 'sample.cjs'), 'module.exports = value => value;\n');
   writeFileSync(join(consumer, 'check.mjs'), `
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { ESLint } from 'eslint';
 import modern from '@iqb/eslint-config';
 import compat from '@iqb/eslint-config/compat';
@@ -77,6 +80,18 @@ for (const [name, config] of [['modern', modern], ['compat', compat]]) {
     'apps/frontend/src/sample.ts', 'libs/shared/src/value.ts', 'sample.mjs', 'sample.cjs',
     'apps/frontend/src/alias-imports.ts', 'libs/shared/src/cycle-a.ts', 'libs/shared/src/cycle-b.ts'
   ]);
+  const configured = await eslint.calculateConfigForFile('apps/frontend/src/sample.ts');
+  const importRule = new ESLint({
+    cwd: import.meta.dirname, overrideConfigFile: true,
+    overrideConfig: [{
+      plugins: { 'import-x': configured.plugins['import-x'] },
+      rules: { 'import-x/no-internal-modules': ['error', { forbid: ['**/internal/**'] }] }
+    }]
+  });
+  const [restricted] = await importRule.lintText('import "./internal/file.js";\\n', { filePath: 'rule-check.mjs' });
+  assert.equal(restricted.fatalErrorCount, 0, JSON.stringify(restricted.messages));
+  assert.equal(restricted.messages.filter(message => message.ruleId === 'import-x/no-internal-modules').length, 1,
+    JSON.stringify(restricted.messages));
   assert.equal(results.length, 7);
   for (const result of results) {
     assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
@@ -93,6 +108,19 @@ for (const [name, config] of [['modern', modern], ['compat', compat]]) {
     assert.equal(duplicates.length, 2, JSON.stringify(results[4].messages));
   }
   console.log(name + ': installed package checks project references, import analysis, ESM and CommonJS');
+}
+if (ESLint.version.startsWith('9.')) {
+  const requireESLint = createRequire(import.meta.resolve('eslint'));
+  const { FlatCompat } = requireESLint('@eslint/eslintrc');
+  const legacy = new FlatCompat({ baseDirectory: import.meta.dirname });
+  const legacyCheck = new ESLint({
+    cwd: import.meta.dirname, overrideConfigFile: true,
+    overrideConfig: legacy.config({ overrides: [{ files: ['**/*.mjs'], rules: { 'no-alert': 'error' } }] })
+  });
+  const [result] = await legacyCheck.lintText('alert("legacy");', { filePath: 'legacy-check.mjs' });
+  assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
+  assert.equal(result.messages.filter(message => message.ruleId === 'no-alert').length, 1);
+  console.log('ESLint 9: the CommonJS FlatCompat bridge preserves legacy override matching.');
 }
 `);
   // Load the installed config from outside the consumer project as editors do.

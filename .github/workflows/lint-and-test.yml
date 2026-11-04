@@ -58,13 +58,24 @@ jobs:
           PACKAGE_MANAGER: pnpm
           APPLY_SECURITY_OVERRIDES: '1'
 
+  verify-vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - name: Verify the pinned upstream source and matching patch
+        run: npm run vendor:check
+
   validation:
     name: Validation
     if: always()
-    needs: lint-and-test
+    needs: [lint-and-test, verify-vendor]
     runs-on: ubuntu-latest
     steps:
       - name: Require all supported combinations to pass
         env:
           MATRIX_RESULT: ${{ needs.lint-and-test.result }}
-        run: test "$MATRIX_RESULT" = success
+          VENDOR_RESULT: ${{ needs.verify-vendor.result }}
+        run: test "$MATRIX_RESULT" = success && test "$VENDOR_RESULT" = success
