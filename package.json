@@ -1,6 +1,6 @@
 {
   "name": "@iqb/eslint-config",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "ESLint rules for javascript and typescript development",
   "type": "module",
   "main": "index.js",
@@ -15,6 +15,8 @@
     "compat.js",
     "compat-rules.js",
     "import-support.js",
+    "import-plugin.js",
+    "vendor/import-x",
     "docs",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
@@ -29,7 +31,9 @@
     "generate:compat": "node scripts/generate-compat-rules.js",
     "capture:legacy": "node scripts/capture-legacy-rules.js",
     "test:package": "node scripts/test-package.js",
-    "audit": "npm audit --audit-level=high"
+    "audit": "npm audit --audit-level=low",
+    "vendor:import-x": "node scripts/vendor-import-x.js",
+    "vendor:check": "node scripts/vendor-import-x.js --check"
   },
   "repository": {
     "type": "git",
@@ -57,9 +61,17 @@
     "eslint-plugin-jsdoc": "^62.9.0",
     "eslint-plugin-perfectionist": "^5.9.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "eslint-plugin-import-x": "^4.17.1",
     "eslint-import-resolver-node": "^0.3.9",
-    "eslint-import-resolver-typescript": "^4.4.5"
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "@typescript-eslint/types": "^8.56.0",
+    "comment-parser": "^1.4.1",
+    "debug": "^4.4.1",
+    "eslint-import-context": "^0.1.9",
+    "is-glob": "^4.0.3",
+    "minimatch": "^11.0.4",
+    "semver": "^7.7.2",
+    "stable-hash-x": "^0.2.0",
+    "unrs-resolver": "^1.9.2"
   },
   "devDependencies": {
     "mocha": "^12.0.3",

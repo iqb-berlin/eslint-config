@@ -22,6 +22,8 @@ try {
   const [tarball] = JSON.parse(packed.stdout);
   assert.ok(tarball.files.some(file => file.path === 'compat-rules.js'));
   assert.ok(tarball.files.some(file => file.path === 'import-support.js'));
+  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/lib/index.cjs'));
+  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/LICENSE'));
   assert.ok(tarball.files.some(file => file.path === 'THIRD_PARTY_NOTICES.md'));
   assert.ok(!tarball.files.some(file => /^(tests|scripts|node_modules)\//u.test(file.path)));
   mkdirSync(consumer);
@@ -50,9 +52,9 @@ try {
       'The pnpm consumer must not hoist the parser into its shared dependency directory');
   }
   if (applySecurityOverrides) {
-    const audited = await exec(packageManager, ['audit', '--audit-level=high'], { cwd: consumer, maxBuffer: 4 * 1024 * 1024 });
+    const audited = await exec(packageManager, ['audit', '--audit-level=low'], { cwd: consumer, maxBuffer: 4 * 1024 * 1024 });
     process.stdout.write(audited.stdout);
-    console.log('Consumer audit found no high or critical vulnerabilities with the documented root overrides.');
+    console.log('Consumer audit found no vulnerabilities with the documented root overrides.');
   }
   cpSync(join(root, 'tests/fixtures/nx'), consumer, { recursive: true });
   writeFileSync(join(consumer, 'sample.mjs'), 'export const sum = (a, b) => a + b;\n');
@@ -77,6 +79,18 @@ for (const [name, config] of [['modern', modern], ['compat', compat]]) {
     'apps/frontend/src/sample.ts', 'libs/shared/src/value.ts', 'sample.mjs', 'sample.cjs',
     'apps/frontend/src/alias-imports.ts', 'libs/shared/src/cycle-a.ts', 'libs/shared/src/cycle-b.ts'
   ]);
+  const configured = await eslint.calculateConfigForFile('apps/frontend/src/sample.ts');
+  const importRule = new ESLint({
+    cwd: import.meta.dirname, overrideConfigFile: true,
+    overrideConfig: [{
+      plugins: { 'import-x': configured.plugins['import-x'] },
+      rules: { 'import-x/no-internal-modules': ['error', { forbid: ['**/internal/**'] }] }
+    }]
+  });
+  const [restricted] = await importRule.lintText('import "./internal/file.js";\\n', { filePath: 'rule-check.mjs' });
+  assert.equal(restricted.fatalErrorCount, 0, JSON.stringify(restricted.messages));
+  assert.equal(restricted.messages.filter(message => message.ruleId === 'import-x/no-internal-modules').length, 1,
+    JSON.stringify(restricted.messages));
   assert.equal(results.length, 7);
   for (const result of results) {
     assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));

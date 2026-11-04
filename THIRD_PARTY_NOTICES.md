@@ -17,6 +17,12 @@ snapshot; their provenance and adaptations are described in `docs/migration.md`.
 
 ## MIT License
 
+The pinned import-x runtime in `vendor/import-x/lib/index.cjs` derives from
+`eslint-plugin-import-x` 4.17.1 (Copyright (c) 2015 Ben Mosher), under the MIT
+license retained in `vendor/import-x/LICENSE`. Its four-line minimatch API
+adaptation, verified source hashes and regeneration procedure are documented in
+`vendor/import-x/README.md` and `vendor/import-x/source.json`.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights

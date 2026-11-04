@@ -1,0 +1,18 @@
+[
+  { "name": "allows a direct sibling", "path": "./entry.mjs", "options": {}, "errors": 0 },
+  { "name": "rejects a resolved internal module by default", "path": "./src/api/service.js", "options": {}, "errors": 1 },
+  { "name": "allows a matching globstar", "path": "./src/api/service.js", "options": { "allow": ["**/api/*"] }, "errors": 0 },
+  { "name": "keeps a single star within its directory", "path": "./src/api/nested/value.js", "options": { "allow": ["**/api/*"] }, "errors": 1 },
+  { "name": "allows nested modules through a globstar", "path": "./src/api/nested/value.js", "options": { "allow": ["**/api/**"] }, "errors": 0 },
+  { "name": "preserves brace alternatives", "path": "./src/private/internal.js", "options": { "forbid": ["**/{api,private}/*"] }, "errors": 1 },
+  { "name": "preserves extglob alternatives", "path": "./src/private/internal.js", "options": { "forbid": ["**/+(api|private)/*"] }, "errors": 1 },
+  { "name": "does not forbid a path excluded by negation", "path": "./src/api/service.js", "options": { "forbid": ["!**/api/**"] }, "errors": 0 },
+  { "name": "forbids other paths through negation", "path": "./src/private/internal.js", "options": { "forbid": ["!**/api/**"] }, "errors": 1 },
+  { "name": "normalizes parent segments before matching", "path": "./src/api/../private/internal.js", "options": { "forbid": ["**/private/*"] }, "errors": 1 },
+  { "name": "ignores an empty pattern", "path": ".", "options": { "forbid": [""] }, "errors": 0 },
+  { "name": "ignores comment patterns", "path": "./src/private/internal.js", "options": { "forbid": ["#comment", ""] }, "errors": 0 },
+  { "name": "does not match hidden files implicitly", "path": "./src/private/.hidden.js", "options": { "forbid": ["**/private/*"] }, "errors": 0 },
+  { "name": "matches explicit hidden files", "path": "./src/private/.hidden.js", "options": { "forbid": ["**/private/.*"] }, "errors": 1 },
+  { "name": "matches scoped module subpaths", "path": "@org/package/internal", "options": { "forbid": ["@org/package/*"] }, "errors": 1 },
+  { "name": "permits scoped module roots", "path": "@org/package", "options": { "forbid": ["@org/package/*"] }, "errors": 0 }
+]

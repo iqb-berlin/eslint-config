@@ -1,6 +1,6 @@
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
-import importX from 'eslint-plugin-import-x';
+import importX from './import-plugin.js';
 import globals from 'globals';
 import nodeResolver from 'eslint-import-resolver-node';
 import rules from './compat-rules.js';

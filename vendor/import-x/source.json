@@ -1,0 +1,18 @@
+{
+  "upstream": "eslint-plugin-import-x@4.17.1",
+  "integrity": "sha512-4cdstYkKCyjumM2Q9NSI03K8D2a9F4Ssz33K2lv2hQa4KmR9jPLwk3uWGtNvclfqBrPGfGuMBwsGMbe6dMRbfg==",
+  "originalBundleSha256": "0d09a1c49ba7f3ec5030e246f81075ee5630cf216429e1db1ea7829bf4c52357",
+  "patchedBundleSha256": "2a9a8da206002d652d638dc0aae3586d6921b74ed8a9b0d66e2615f5a9792e5e",
+  "regeneration": "npm run vendor:import-x",
+  "runtimeDependencies": {
+    "@typescript-eslint/types": "^8.56.0",
+    "comment-parser": "^1.4.1",
+    "debug": "^4.4.1",
+    "eslint-import-context": "^0.1.9",
+    "is-glob": "^4.0.3",
+    "minimatch": "^11.0.4",
+    "semver": "^7.7.2",
+    "stable-hash-x": "^0.2.0",
+    "unrs-resolver": "^1.9.2"
+  }
+}

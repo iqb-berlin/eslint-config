@@ -27,8 +27,8 @@ npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescrip
 ESLint 9 also works; replace both `@^10` ranges with `@^9`. The declared TypeScript
 range follows typescript-eslint 8; the consumer regression tests use 5.9.3.
 The package installs its parsers, plugins and import resolver automatically.
-Apply the root dependency overrides from [dependency security](security.md)
-and review its remaining moderate import-x finding. Overrides in this
+Apply the root dependency overrides from [dependency security](security.md).
+Version 3.0.1 corrects the import-x/minimatch incompatibility. Overrides in this
 repository are not inherited by installed consumers.
 
 ## Replace the legacy configuration

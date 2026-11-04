@@ -2,7 +2,7 @@
 
 ESLint rules for TypeScript and JavaScript development, with rules agreed by IQB developers. Uses ESLint 9/10 Flat Config and ESM.
 
-Version 3.0.0 is a major upgrade from the legacy configuration. See the
+Version 3 is a major upgrade from the legacy configuration. See the
 [migration guide](docs/migration.md) and [changelog](CHANGELOG.md) before upgrading.
 
 ## Features
@@ -17,13 +17,13 @@ Version 3.0.0 is a major upgrade from the legacy configuration. See the
 
 ## Installation
 
-Check availability with `npm view @iqb/eslint-config@3.0.0 version` before
+Check availability with `npm view @iqb/eslint-config@3.0.1 version` before
 following the version 3 instructions below. A 404 means that the source changes
 have not yet been published to npm; the legacy 2.x package cannot use these
 Flat Config examples. See [the release procedure](docs/releasing.md).
 
-Apply the root dependency overrides described in [dependency security](docs/security.md)
-and review the remaining moderate upstream import-x finding before upgrading.
+Apply the root dependency overrides described in [dependency security](docs/security.md).
+Version 3.0.1 includes a verified import-x runtime correction for minimatch 11.
 
 Requires Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`.
 ```bash
@@ -122,7 +122,8 @@ actual duplicate imports and cycles, including calls from outside the consumer
 directory. The pnpm check needs pnpm installed and disables dependency hoisting.
 CI runs the unit tests and npm/pnpm consumer checks with the documented security
 overrides and both ESLint majors on Node.js 20/22/24. Its dependency audits fail
-on high or critical findings and print the remaining moderate findings.
+on any severity. CI also verifies the pinned import-x runtime and its patch
+against the exact upstream tarball with `npm run vendor:check`.
 
 The legacy snapshot and rule mappings can be regenerated with
 `npm run capture:legacy` and `npm run generate:compat`; see the migration guide
