@@ -17,20 +17,16 @@ Version 3 is a major upgrade from the legacy configuration. See the
 
 ## Installation
 
-Check availability with `npm view @iqb/eslint-config@3.0.1 version` before
-following the version 3 instructions below. A 404 means that the source changes
-have not yet been published to npm; the legacy 2.x package cannot use these
-Flat Config examples. See [the release procedure](docs/releasing.md).
-
-Apply the root dependency overrides described in [dependency security](docs/security.md).
-Version 3.0.1 includes a verified import-x runtime correction for minimatch 11.
+Check npm availability with `npm view @iqb/eslint-config@3.0.1 version` before
+installing. Apply the SonarJS override described in
+[dependency security](docs/security.md) and audit the resulting lockfile.
 
 Requires Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`.
 ```bash
-npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescript@~5.9.3
+npm install --save-dev @iqb/eslint-config@^3.0.1 eslint@^10.15.0 @eslint/js@^10 typescript@~5.9.3
 ```
 
-For ESLint 9, use `eslint@^9` and `@eslint/js@^9` together. The package installs
+For ESLint 9, use `eslint@^9.39.5` and `@eslint/js@^9` together. The package installs
 its parsers, plugins and import resolver as runtime dependencies.
 
 ## Choose a profile
@@ -120,10 +116,9 @@ These checks pack the package, install it in a clean temporary consumer and
 lint TypeScript project references, path aliases, ESM and CommonJS. They check
 actual duplicate imports and cycles, including calls from outside the consumer
 directory. The pnpm check needs pnpm installed and disables dependency hoisting.
-CI runs the unit tests and npm/pnpm consumer checks with the documented security
-overrides and both ESLint majors on Node.js 20/22/24. Its dependency audits fail
-on any severity. CI also verifies the pinned import-x runtime and its patch
-against the exact upstream tarball with `npm run vendor:check`.
+CI runs the unit tests and npm/pnpm consumer checks with the documented SonarJS
+override and both ESLint majors on Node.js 20/22/24. Its dependency audits fail
+on any severity.
 
 The legacy snapshot and rule mappings can be regenerated with
 `npm run capture:legacy` and `npm run generate:compat`; see the migration guide

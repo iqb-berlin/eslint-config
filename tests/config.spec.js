@@ -1,5 +1,7 @@
 import assert from 'node:assert';
 import { ESLint } from 'eslint';
+import importX from 'eslint-plugin-import-x';
+import iqbCompatConfig from '../compat.js';
 import iqbTsConfig from '../index.js';
 import iqbJsConfig from '../javascript.js';
 
@@ -10,6 +12,21 @@ describe('ESLint Config', () => {
     assert.ok(Array.isArray(iqbJsConfig));
     assert.ok(iqbJsConfig.length > 0);
   });
+
+  for (const [profile, config] of [['default', iqbTsConfig], ['compat', iqbCompatConfig]]) {
+    it(`should share the import-x plugin with consumers of the ${profile} profile`, async () => {
+      const eslint = new ESLint({
+        overrideConfigFile: true,
+        overrideConfig: [...config, {
+          files: ['**/*.ts'],
+          plugins: { 'import-x': importX }
+        }]
+      });
+
+      const resolved = await eslint.calculateConfigForFile('tests/fixtures/sample.ts');
+      assert.strictEqual(resolved.plugins['import-x'], importX);
+    });
+  }
 
   it('should lint TypeScript fixture without fatal errors', async () => {
     const eslint = new ESLint({
