@@ -2,16 +2,15 @@
 
 ## 3.0.1
 
-- Use the pinned import-x 4.17.1 runtime with a four-line adaptation from the
-  removed `makeRe` API to `Minimatch.match`, allowing a fixed minimatch 11.0.4+
-  dependency without disabling import rules. Preserve upstream provenance and
-  license and verify the runtime against the pinned tarball in CI.
+- Use `eslint-plugin-import-x@4.18.1` with upstream minimatch 11 support.
+  Both TypeScript profiles compose with a consumer's registration of the same
+  plugin instance.
 - Cover import/export/require matching, allow/forbid patterns, negation,
   globstar, extglobs, braces, hidden files and restricted-path exceptions.
-- Test the patched rule through both profiles in clean installed npm/pnpm
+- Test the import rule through both profiles in clean installed npm/pnpm
   consumers. Require zero findings at every severity in dependency audits.
-- Document five scoped root overrides for other lint dependencies, including
-  ESLint 9's legacy eslintrc dependency, and test its CommonJS FlatCompat bridge.
+- Test and document a SonarJS-only minimatch override for current npm and pnpm
+  consumer installs.
 
 ## 3.0.0
 

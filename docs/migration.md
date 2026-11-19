@@ -1,4 +1,4 @@
-# Migration from 2.2.0 to 3.0.0
+# Migration from 2.2.0 to 3.x
 
 Version 3.0.0 uses ESM, ESLint Flat Config and current TypeScript tooling.
 
@@ -21,15 +21,15 @@ Use Node.js `^20.19.0 || ^22.13.0 || >=24.0.0`. Install matching ESLint and
 `@eslint/js` majors, for example:
 
 ```sh
-npm install --save-dev @iqb/eslint-config@^3 eslint@^10 @eslint/js@^10 typescript@~5.9.3
+npm install --save-dev @iqb/eslint-config@^3.0.1 eslint@^10.15.0 @eslint/js@^10 typescript@~5.9.3
 ```
 
-ESLint 9 also works; replace both `@^10` ranges with `@^9`. The declared TypeScript
-range follows typescript-eslint 8; the consumer regression tests use 5.9.3.
+For ESLint 9, use `eslint@^9.39.5` and `@eslint/js@^9` together.
+The declared TypeScript range follows typescript-eslint 8. The consumer
+regression tests use 5.9.3.
 The package installs its parsers, plugins and import resolver automatically.
-Apply the root dependency overrides from [dependency security](security.md).
-Version 3.0.1 corrects the import-x/minimatch incompatibility. Overrides in this
-repository are not inherited by installed consumers.
+Apply the SonarJS override in the consumer root and audit the lockfile. See
+[dependency security](security.md).
 
 ## Replace the legacy configuration
 

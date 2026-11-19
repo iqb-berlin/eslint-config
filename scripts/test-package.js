@@ -22,10 +22,8 @@ try {
   const [tarball] = JSON.parse(packed.stdout);
   assert.ok(tarball.files.some(file => file.path === 'compat-rules.js'));
   assert.ok(tarball.files.some(file => file.path === 'import-support.js'));
-  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/lib/index.cjs'));
-  assert.ok(tarball.files.some(file => file.path === 'vendor/import-x/LICENSE'));
   assert.ok(tarball.files.some(file => file.path === 'THIRD_PARTY_NOTICES.md'));
-  assert.ok(!tarball.files.some(file => /^(tests|scripts|node_modules)\//u.test(file.path)));
+  assert.ok(!tarball.files.some(file => /^(tests|scripts|node_modules|vendor)\//u.test(file.path)));
   mkdirSync(consumer);
   writeFileSync(join(consumer, 'package.json'), JSON.stringify({
     name: 'iqb-package-consumer', private: true, type: 'module',
@@ -120,7 +118,7 @@ if (ESLint.version.startsWith('9.')) {
   const [result] = await legacyCheck.lintText('alert("legacy");', { filePath: 'legacy-check.mjs' });
   assert.equal(result.fatalErrorCount, 0, JSON.stringify(result.messages));
   assert.equal(result.messages.filter(message => message.ruleId === 'no-alert').length, 1);
-  console.log('ESLint 9: the CommonJS FlatCompat bridge preserves legacy override matching.');
+  console.log('ESLint 9: FlatCompat preserves legacy override matching.');
 }
 `);
   // Load the installed config from outside the consumer project as editors do.

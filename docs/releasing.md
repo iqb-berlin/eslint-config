@@ -6,7 +6,6 @@
 - All six Node.js 20/22/24 and ESLint 9/10 CI jobs and the `Validation` check pass.
 - Review the dependency audit and [security.md](security.md). Repository and
   clean consumer audits must contain zero findings at every severity.
-- `npm run vendor:check` must verify the pinned plugin runtime and matching patch.
 - An npm maintainer account for `@iqb/eslint-config`; verify with `npm whoami`.
 - GitHub write permission for tags/releases; admin permission for branch protection.
 

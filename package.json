@@ -15,8 +15,6 @@
     "compat.js",
     "compat-rules.js",
     "import-support.js",
-    "import-plugin.js",
-    "vendor/import-x",
     "docs",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
@@ -31,9 +29,7 @@
     "generate:compat": "node scripts/generate-compat-rules.js",
     "capture:legacy": "node scripts/capture-legacy-rules.js",
     "test:package": "node scripts/test-package.js",
-    "audit": "npm audit --audit-level=low",
-    "vendor:import-x": "node scripts/vendor-import-x.js",
-    "vendor:check": "node scripts/vendor-import-x.js --check"
+    "audit": "npm audit --audit-level=low"
   },
   "repository": {
     "type": "git",
@@ -55,7 +51,7 @@
     "typescript": ">=4.8.4 <6.1.0"
   },
   "dependencies": {
-    "typescript-eslint": "^8.70.1",
+    "typescript-eslint": "^8.73.0",
     "globals": "^15.0.0",
     "eslint-plugin-sonarjs": "^4.0.3",
     "eslint-plugin-jsdoc": "^62.9.0",
@@ -63,27 +59,15 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint-import-resolver-node": "^0.3.9",
     "eslint-import-resolver-typescript": "^4.4.5",
-    "@typescript-eslint/types": "^8.56.0",
-    "comment-parser": "^1.4.1",
-    "debug": "^4.4.1",
-    "eslint-import-context": "^0.1.9",
-    "is-glob": "^4.0.3",
-    "minimatch": "^11.0.4",
-    "semver": "^7.7.2",
-    "stable-hash-x": "^0.2.0",
-    "unrs-resolver": "^1.9.2"
+    "eslint-plugin-import-x": "4.18.1"
   },
   "devDependencies": {
     "mocha": "^12.0.3",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "@eslint/js": "^10.0.1",
     "typescript": "5.9.3"
   },
   "overrides": {
-    "eslint": { "minimatch": "^11.0.4" },
-    "@eslint/config-array": { "minimatch": "^11.0.4" },
-    "@eslint/eslintrc": { "minimatch": "^11.0.4" },
-    "@typescript-eslint/typescript-estree": { "minimatch": "^11.0.4" },
     "eslint-plugin-sonarjs": { "minimatch": "^11.0.4" },
     "mocha": {
       "minimatch": "^11.0.4",

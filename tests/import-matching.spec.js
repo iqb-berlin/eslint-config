@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
-import importX, { createNodeResolver } from '../import-plugin.js';
+import importX, { createNodeResolver } from 'eslint-plugin-import-x';
 
 const cwd = fileURLToPath(new URL('./fixtures/import-matching/', import.meta.url));
 const cases = JSON.parse(readFileSync(new URL('./fixtures/import-matching/cases.json', import.meta.url)));
@@ -20,7 +20,7 @@ function createESLint(rule, options) {
   });
 }
 
-describe('Import matching with the patched plugin', () => {
+describe('Import matching with import-x', () => {
   for (const [syntax, statement] of [
     ['import', path => `import ${JSON.stringify(path)};`],
     ['export', path => `export * from ${JSON.stringify(path)};`],
